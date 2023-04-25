@@ -45,7 +45,7 @@ async function findAll(filtros: FichaFiltros) {
     params: filtros,
   });
 
-  return res.data as IFicha[];
+  return res.data.data as IFicha[];
 }
 
 async function upload(form: FormData) {
