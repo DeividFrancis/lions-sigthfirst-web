@@ -1,15 +1,29 @@
-import { Dialog } from "~/components/Dialog";
+import { useSetAtom } from "jotai";
+import { FormProvider, useForm } from "react-hook-form";
 import { Button } from "~/components/Button";
+import { Dialog } from "~/components/Dialog";
 import { TextInput } from "~/components/TextInput";
-import { Checkbox } from "../Checkbox";
+import { filtroAtom } from "~/queries/ficha-query";
 import { ToggleInput } from "../ToggleInput";
-import { useForm, FormProvider } from "react-hook-form";
 
 export function DialogFiltros() {
   const methods = useForm();
+  const setFiltros = useSetAtom(filtroAtom);
 
   async function handleSubmit(data: any) {
     console.log("data", data);
+
+    const keys = Object.keys(data);
+    const filtros = keys.reduce((obj, key) => {
+      const value = data[key];
+      if (value != "") {
+        obj[key] = value;
+      }
+
+      return obj;
+    }, {} as any);
+
+    setFiltros(filtros);
   }
 
   return (
@@ -20,7 +34,7 @@ export function DialogFiltros() {
       <Dialog.Portal>
         <Dialog.Overlay />
         <Dialog.Content>
-          <form onSubmit={methods.handleSubmit(handleSubmit)}>
+          <form>
             <FormProvider {...methods}>
               <div className="grid gap-6">
                 <TextInput name="aluno" label="Aluno" />
@@ -44,7 +58,12 @@ export function DialogFiltros() {
                 <div>
                   <TextInput name="observacao" label="Observação" />
                 </div>
-                <Button type="submit">Filtrar</Button>
+                <Dialog.Close
+                  asChild
+                  onClick={methods.handleSubmit(handleSubmit)}
+                >
+                  <Button>Filtrar</Button>
+                </Dialog.Close>
               </div>
             </FormProvider>
           </form>
