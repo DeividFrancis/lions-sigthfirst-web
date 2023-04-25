@@ -57,7 +57,7 @@ export function DialogFiltros() {
                   <TextInput name="turma" label="Turma" />
                   <TextInput name="turno" label="Turno" />
                   <TextInput name="comisao" label="Comisão" />
-                  <SituacaoInput name="situacao" label="Situação" />
+                  <SituacaoInput name="situacao.id" label="Situação" />
                 </div>
 
                 <div>
