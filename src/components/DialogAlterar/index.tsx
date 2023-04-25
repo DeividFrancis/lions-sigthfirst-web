@@ -4,29 +4,36 @@ import { TextInput } from "~/components/TextInput";
 import { Checkbox } from "../Checkbox";
 import { ToggleInput } from "../ToggleInput";
 import { useForm, FormProvider } from "react-hook-form";
-import { useSetAtom } from "jotai";
-import { filtroAtom } from "~/queries/ficha-query";
-import { useState } from "react";
+import { useAtom, useAtomValue } from "jotai";
+import {
+  editaModalOpenAtom,
+  fichaAtom,
+  filtroAtom,
+} from "~/queries/ficha-query";
+import { useEffect, useState } from "react";
 
 export function DialogAlterar() {
-  const [isOpen, setOpen] = useState(false);
+  const [isOpen, setOpen] = useAtom(editaModalOpenAtom);
   const methods = useForm();
-  const setFiltros = useSetAtom(filtroAtom);
+  const ficha = useAtomValue(fichaAtom);
+
+  useEffect(() => {
+    methods.reset(ficha);
+  }, [ficha, methods]);
 
   async function handleSubmit(data: any) {
     console.log("data", data);
 
-    const keys = Object.keys(data);
-    const filtros = keys.reduce((obj, key) => {
-      const value = data[key];
-      if (value != "") {
-        obj[key] = value;
-      }
+    // const keys = Object.keys(data);
+    // const filtros = keys.reduce((obj, key) => {
+    //   const value = data[key];
+    //   if (value != "") {
+    //     obj[key] = value;
+    //   }
 
-      return obj;
-    }, {} as any);
+    //   return obj;
+    // }, {} as any);
 
-    setFiltros(filtros);
     setOpen(false);
   }
 
