@@ -14,9 +14,9 @@ const fichaFindSchema = z.object({
   exameRealizado: z.coerce.boolean().optional(),
 });
 
-type FichaFiltros = z.infer<typeof fichaFindSchema>;
+export type FichaFiltros = z.infer<typeof fichaFindSchema>;
 
-interface IFicha {
+export interface IFicha {
   id: string;
   escola: string;
   professor: string;
