@@ -1,12 +1,16 @@
-import { useSetAtom } from "jotai";
-import { FormProvider, useForm } from "react-hook-form";
-import { Button } from "~/components/Button";
 import { Dialog } from "~/components/Dialog";
+import { Button } from "~/components/Button";
 import { TextInput } from "~/components/TextInput";
-import { filtroAtom } from "~/queries/ficha-query";
+import { Checkbox } from "../Checkbox";
 import { ToggleInput } from "../ToggleInput";
+import { useForm, FormProvider } from "react-hook-form";
+import { useSetAtom } from "jotai";
+import { filtroAtom } from "~/queries/ficha-query";
+import { useState } from "react";
+import { SituacaoInput } from "../SituacaoInput";
 
 export function DialogFiltros() {
+  const [isOpen, setOpen] = useState(false);
   const methods = useForm();
   const setFiltros = useSetAtom(filtroAtom);
 
@@ -24,17 +28,18 @@ export function DialogFiltros() {
     }, {} as any);
 
     setFiltros(filtros);
+    setOpen(false);
   }
 
   return (
-    <Dialog.Root>
-      <Dialog.Trigger asChild>
+    <Dialog.Root open={isOpen}>
+      <Dialog.Trigger asChild onClick={() => setOpen(true)}>
         <Button>Filtros</Button>
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay />
         <Dialog.Content>
-          <form>
+          <form onSubmit={methods.handleSubmit(handleSubmit)}>
             <FormProvider {...methods}>
               <div className="grid gap-6">
                 <TextInput name="aluno" label="Aluno" />
@@ -52,17 +57,14 @@ export function DialogFiltros() {
                   <TextInput name="turma" label="Turma" />
                   <TextInput name="turno" label="Turno" />
                   <TextInput name="comisao" label="Comisão" />
-                  <TextInput name="situacao" label="Situação" />
+                  <SituacaoInput name="situacao" label="Situação" />
                 </div>
 
                 <div>
                   <TextInput name="observacao" label="Observação" />
                 </div>
-                <Dialog.Close
-                  asChild
-                  onClick={methods.handleSubmit(handleSubmit)}
-                >
-                  <Button>Filtrar</Button>
+                <Dialog.Close asChild>
+                  <Button type="submit">Filtrar</Button>
                 </Dialog.Close>
               </div>
             </FormProvider>

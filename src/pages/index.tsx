@@ -1,4 +1,5 @@
 import { Button } from "~/components/Button";
+import { DialogAlterar } from "~/components/DialogAlterar";
 import { DialogFiltros } from "~/components/DialogFiltros";
 import { Table } from "~/components/Table";
 import { useFicha } from "~/queries/ficha-query";
@@ -13,6 +14,7 @@ export default function Home() {
       <div className="flex justify-between items-center">
         <Button className="mr-8">Importar dados</Button>
         <DialogFiltros />
+        <DialogAlterar />
       </div>
       <div className="relative overflow-x-auto">
         <Table>
