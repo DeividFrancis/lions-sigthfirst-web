@@ -1,19 +1,13 @@
-import { Dialog } from "~/components/Dialog";
+import { Button } from "~/components/Button";
+import { DialogFiltros } from "~/components/DialogFiltros";
 
 export default function Home() {
   return (
-    <>
-      <Dialog.Root>
-        <Dialog.Trigger asChild>
-          <button>Open modal</button>
-        </Dialog.Trigger>
-        <Dialog.Portal>
-          <Dialog.Overlay />
-          <Dialog.Content>
-            <h1>Teste</h1>
-          </Dialog.Content>
-        </Dialog.Portal>
-      </Dialog.Root>
-    </>
-  )
+    <div>
+      <div className="flex justify-between items-center">
+        <Button className="mr-8">Importar dados</Button>
+        <DialogFiltros />
+      </div>
+    </div>
+  );
 }
