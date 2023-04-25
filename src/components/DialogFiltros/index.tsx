@@ -1,7 +1,6 @@
 import { Dialog } from "~/components/Dialog";
 import { Button } from "~/components/Button";
 import { TextInput } from "~/components/TextInput";
-import { Checkbox } from "../Checkbox";
 import { ToggleInput } from "../ToggleInput";
 import { useForm, FormProvider } from "react-hook-form";
 import { useSetAtom } from "jotai";
@@ -57,7 +56,7 @@ export function DialogFiltros() {
                   <TextInput name="turma" label="Turma" />
                   <TextInput name="turno" label="Turno" />
                   <TextInput name="comisao" label="Comisão" />
-                  <SituacaoInput name="situacao.id" label="Situação" />
+                  {/* <SituacaoInput name="situacao.id" label="Situação" /> */}
                 </div>
 
                 <div>

@@ -1,11 +1,14 @@
+import { useAtom, useSetAtom } from "jotai";
 import { Button } from "~/components/Button";
 import { DialogAlterar } from "~/components/DialogAlterar";
 import { DialogFiltros } from "~/components/DialogFiltros";
 import { Table } from "~/components/Table";
-import { useFicha } from "~/queries/ficha-query";
+import { editaModalOpenAtom, fichaAtom, useFicha } from "~/queries/ficha-query";
 
 export default function Home() {
   const { data: fichas } = useFicha();
+  const [ficha, setFicha] = useAtom(fichaAtom);
+  const setOpenEditar = useSetAtom(editaModalOpenAtom);
 
   console.log("fichas", fichas);
 
@@ -16,7 +19,7 @@ export default function Home() {
         <DialogFiltros />
         <DialogAlterar />
       </div>
-      <div className="relative overflow-x-auto">
+      <div className="relative overflow-x-auto mt-10">
         <Table>
           <Table.Head
             className={`text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400`}
@@ -45,21 +48,36 @@ export default function Home() {
                 <Table.HeaderCell>{ficha.escola}</Table.HeaderCell>
                 <Table.HeaderCell>{ficha.notaOlhoEsquerdo}</Table.HeaderCell>
                 <Table.HeaderCell>{ficha.notaOlhoDireito}</Table.HeaderCell>
-                <Table.HeaderCell>{ficha.notaOlhoTotal}</Table.HeaderCell>
+                <Table.HeaderCell>
+                  <span
+                    className={`${ficha.apresentaProblema && "text-red-500"}`}
+                  >
+                    {ficha.notaOlhoTotal}
+                  </span>
+                </Table.HeaderCell>
                 <Table.HeaderCell>
                   <div
+                    className="px-2 py-1"
                     style={{
                       display: "flex",
                       backgroundColor: ficha.situacao.cor,
-                      padding: 2,
                       borderRadius: 6,
                       justifyContent: "center",
+                      color: "white",
+                      textAlign: "center",
                     }}
                   >
                     {ficha.situacao.descricao}
                   </div>
                 </Table.HeaderCell>
-                <Table.HeaderCell>Editar</Table.HeaderCell>
+                <Table.HeaderCell
+                  onClick={() => {
+                    setOpenEditar(true);
+                    setFicha(ficha);
+                  }}
+                >
+                  <b className="font-bold underline cursor-pointer">Editar</b>
+                </Table.HeaderCell>
               </Table.Row>
             ))}
           </Table.Body>

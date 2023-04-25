@@ -1,6 +1,18 @@
 import { z } from "zod";
 import { api } from "./api";
 
+export const fichaUpdateSchema = z.object({
+  situacao: z
+    .object({
+      id: z.string(),
+    })
+    .optional(),
+  observacao: z.string().optional(),
+  notaOlhoDireito: z.coerce.number().optional(),
+  notaOlhoEsquerdo: z.coerce.number().optional(),
+});
+export type FichaUpdate = z.infer<typeof fichaUpdateSchema>;
+
 const fichaFindSchema = z.object({
   escola: z.string().optional(),
   aluno: z.string().optional(),
@@ -28,7 +40,7 @@ export interface IFicha {
   notaOlhoEsquerdo?: number;
   notaOlhoTotal?: number;
   especial?: boolean;
-  observacao?: boolean;
+  observacao?: string;
   apresentaProblema?: boolean;
   exameRealizado?: boolean;
   createdAt: string;
@@ -48,6 +60,13 @@ async function findAll(filtros: FichaFiltros) {
   return res.data.data as IFicha[];
 }
 
+async function update(id: string, body: FichaUpdate) {
+  const bodyFinal = fichaUpdateSchema.parse(body);
+  const res = await api.put(`/ficha/${id}`, bodyFinal);
+
+  return res.data.message as string;
+}
+
 async function upload(form: FormData) {
   const res = await api.post("/ficha/upload", form, {
     headers: {
@@ -57,7 +76,9 @@ async function upload(form: FormData) {
 
   return res.data;
 }
+
 export const FichaService = {
   findAll,
   upload,
+  update,
 };
